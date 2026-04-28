@@ -168,8 +168,8 @@ function unbracketTag(str) {
  *   'Thunderstruck' => 'THUNDERSTRUCK'
  *  'abcdefghijklmnopqrstuvwxyz' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
  */
-function convertToUpperCase(/* str */) {
-  throw new Error('Not implemented');
+function convertToUpperCase(str) {
+  return str.toUpperCase();
 }
 
 /**
@@ -214,8 +214,29 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let answer = '';
+  for (let i = 0; i < height; i += 1) {
+    for (let j = 0; j < width; j += 1) {
+      if (i === 0 && j === 0) {
+        answer += '┌';
+      } else if (i === 0 && j === width - 1) {
+        answer += '┐';
+      } else if (i === height - 1 && j === 0) {
+        answer += '└';
+      } else if (i === height - 1 && j === width - 1) {
+        answer += '┘';
+      } else if (i === 0 || i === height - 1) {
+        answer += '─';
+      } else if (i > 0 && i < height - 1 && j > 0 && j < width - 1) {
+        answer += ' ';
+      } else if (j === 0 || j === width - 1) {
+        answer += '│';
+      }
+    }
+    answer += '\n';
+  }
+  return answer;
 }
 
 /**
