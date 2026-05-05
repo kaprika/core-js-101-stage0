@@ -322,8 +322,19 @@ function isCreditCardNumber(ccn) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let sum = 0;
+  let item = num;
+  do {
+    sum = 0;
+    while (item !== 0) {
+      const digit = item % 10;
+      sum += digit;
+      item = Math.trunc(item / 10);
+    }
+    item = sum;
+  } while (sum > 9);
+  return sum;
 }
 
 /**
@@ -347,8 +358,49 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brackets = [];
+  let bracket;
+  for (let i = 0; i < str.length; i += 1) {
+    const item = str[i];
+    if (item === '(') {
+      brackets.push(item);
+    }
+    if (item === '<') {
+      brackets.push(item);
+    }
+    if (item === '[') {
+      brackets.push(item);
+    }
+    if (item === '{') {
+      brackets.push(item);
+    }
+    if (item === ')') {
+      bracket = brackets.pop();
+      if (bracket !== '(') {
+        return false;
+      }
+    }
+    if (item === '>') {
+      bracket = brackets.pop();
+      if (bracket !== '<') {
+        return false;
+      }
+    }
+    if (item === ']') {
+      bracket = brackets.pop();
+      if (bracket !== '[') {
+        return false;
+      }
+    }
+    if (item === '}') {
+      bracket = brackets.pop();
+      if (bracket !== '{') {
+        return false;
+      }
+    }
+  }
+  return brackets.length === 0;
 }
 
 /**
@@ -371,8 +423,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 /**
@@ -387,8 +439,19 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const splitted = pathes.map((item) => item.split('/'));
+  const result = [];
+  for (let i = 0; i < splitted[0].length; i += 1) {
+    const current = splitted[0][i];
+    const same = splitted.every((path) => path[i] === current);
+    if (!same) {
+      break;
+    }
+
+    result.push(current);
+  }
+  return result.join('/') + (result.length ? '/' : '');
 }
 
 /**
@@ -409,8 +472,24 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = [];
+
+  for (let i = 0; i < m1.length; i += 1) {
+    result[i] = [];
+
+    for (let j = 0; j < m2[0].length; j += 1) {
+      let sum = 0;
+
+      for (let k = 0; k < m2.length; k += 1) {
+        sum += m1[i][k] * m2[k][j];
+      }
+
+      result[i][j] = sum;
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -443,8 +522,48 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const countX = new Array(8).fill(0);
+  const count0 = new Array(8).fill(0);
+  for (let i = 0; i < 3; i += 1) {
+    for (let j = 0; j < 3; j += 1) {
+      if (position[i][j] === 'X') {
+        countX[i + 5] += 1;
+      }
+      if (position[i][j] === '0') {
+        count0[i + 5] += 1;
+      }
+    }
+  }
+  for (let i = 0; i < 3; i += 1) {
+    if (position[i][i] === 'X') {
+      countX[3] += 1;
+    }
+    if (position[i][2 - i] === 'X') {
+      countX[4] += 1;
+    }
+    if (position[i][i] === '0') {
+      count0[3] += 1;
+    }
+    if (position[i][2 - i] === '0') {
+      count0[4] += 1;
+    }
+    for (let j = 0; j < 3; j += 1) {
+      if (position[j][i] === 'X') {
+        countX[i] += 1;
+      }
+      if (position[j][i] === '0') {
+        count0[i] += 1;
+      }
+    }
+  }
+  if (countX.some((item) => item === 3)) {
+    return 'X';
+  }
+  if (count0.some((item) => item === 3)) {
+    return '0';
+  }
+  return undefined;
 }
 
 module.exports = {
